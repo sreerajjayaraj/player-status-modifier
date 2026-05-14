@@ -2,6 +2,8 @@
 
 `player-status-modifier` is an ASI mod for `Crimson Desert` built as a native x64 DLL and loaded through an ASI loader.
 
+Original mod-source https://github.com/Orcax-1399/CrimsonDesert-player-status-modifier.
+
 For the Ultimate ASI Loader deployment flow, keep these files together in the game's `bin64` folder:
 
 ```text
