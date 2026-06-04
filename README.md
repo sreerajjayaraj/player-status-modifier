@@ -119,38 +119,17 @@ Enabled=1
 Multiplier=2.0
 
 [IncomingDamage]
-Enabled=0
+Enabled=1
 Multiplier=1.0
 
 [Items]
 GainMultiplier=2.0
 
-[Affinity]
-Multiplier=1.0
-
-[Durability]
-ConsumptionChance=100.0
-
 [Mount]
-Enabled=0
-LockHealth=1
+Enabled=1
+LockHealth=0
 LockStamina=1
 LockValue=9999999
-
-[DragonLimit]
-roof_summon_experimental=0
-village_summon=1
-cancel_restrict_flying=1
-
-[Position Control(Height)]
-Enable=0
-Key=117
-Amplitude=0.1
-
-[Position Control(Horizontal)]
-Enable=0
-Key=118
-Multiplier=1.5
 
 [Health]
 ConsumptionMultiplier=0.5
@@ -165,13 +144,6 @@ ConsumptionMultiplier=0.5
 HealMultiplier=2.0
 ```
 
-Durability fields:
-
-- `ConsumptionChance` is clamped to `0..100`
-- `100` means maintenance and durability always consume normally
-- `0` means maintenance and durability never consume
-- values between `0` and `100` apply a per-write chance gate to both maintenance and durability loss paths
-
 Damage fields:
 
 - `OutgoingDamage.Enabled=1` or `OutgoingDamage.Enable=1` enables outgoing player / mount / dragon damage scaling
@@ -179,42 +151,13 @@ Damage fields:
 - `IncomingDamage.Enabled=1` or `IncomingDamage.Enable=1` enables incoming damage scaling against the resolved player target
 - `IncomingDamage.Multiplier` scales incoming negative player-health deltas when `IncomingDamage.Enabled=1`; it combines with `Health.ConsumptionMultiplier`, so the effective incoming-damage scale is `Health.ConsumptionMultiplier * IncomingDamage.Multiplier`
 
-Affinity fields:
-
-- `Multiplier` scales positive affinity/friendly deltas before the game commits the updated value
-- the hook rewrites the pending `record + 0x10` value using `old_value + floor((new_value - old_value) * multiplier)`
-- non-positive deltas are left untouched
-- the final value is clamped to the game-side cap (`100`)
-- `1.0` keeps affinity unchanged and skips installing the affinity hook entirely
-
 Mount fields:
 
 `Mount.LockValue` now sets the target health/stamina lock value and is clamped to each resolved mount stat maximum. The default `9999999` effectively means lock to max.
-
-
 - `Enabled=1` enables mount stat locking after the async resolver validates the current mount / dragon marker
 - `LockHealth=1` locks the resolved mount health entry to `LockValue`
 - `LockStamina=1` locks the resolved mount stamina entry to `LockValue`
 - `LockValue` is clamped to the stat max during write interception
-
-DragonLimit fields:
-
-- `roof_summon_experimental=1` enables the current roof / high-place summon experimental bypass; this is still a high-risk result-layer patch and is disabled by default
-- `village_summon=1` enables the village summon bypass by forcing the validated request into the downstream summon-rule chain
-- `cancel_restrict_flying=1` prevents the validated forced-dismount result from ejecting the player from the dragon while keeping manual dismount available
-- none of these dragon-limit edits become active until the mod has already captured the current player actor and player status marker at runtime
-
-Position height control fields:
-
-- `Enable=1` turns on the height-control hook and key listener
-- `Key` is a Windows virtual-key code, default `117` (`VK_F6`)
-- `Amplitude` is the amount added to the height axis per successful key-listener poll
-
-Position horizontal control fields:
-
-- `Enable=1` turns on horizontal movement scaling and its dedicated key listener
-- `Key` is a Windows virtual-key code, default `118` (`VK_F7`)
-- `Multiplier` scales only the per-update X/Z movement delta; `1.0` means no change
 
 ## Build
 
