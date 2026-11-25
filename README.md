@@ -1,5 +1,9 @@
 # player-status-modifier
 
+## Current source for 2.05.01
+
+[d217 sources and build steps](fix244-d217/BUILD.md) cover the Windows 1.0.0.3732 build. Prior snapshots are retained.
+
 `player-status-modifier` is an ASI mod for `Crimson Desert` built as a native x64 DLL and loaded through an ASI loader.
 
 Original mod-source https://github.com/Orcax-1399/CrimsonDesert-player-status-modifier.
